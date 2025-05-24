@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: twilio-app
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn twilioproject.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: twilioproject.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SECRET_KEY
+        value: ${SECRET_KEY}
+      - key: TWILIO_ACCOUNT_SID
+        value: ${TWILIO_ACCOUNT_SID}
+      - key: TWILIO_AUTH_TOKEN
+        value: ${TWILIO_AUTH_TOKEN}
+      - key: DEBUG
+        value: "False"
